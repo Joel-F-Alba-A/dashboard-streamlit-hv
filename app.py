@@ -781,7 +781,7 @@ with tab2:
         )
 
         fig2.update_layout(
-
+            autosize=True,
             paper_bgcolor="white",
             plot_bgcolor="white",
 
@@ -792,7 +792,8 @@ with tab2:
 
             title_font_size=22,
 
-            height=430,
+            height=380,
+            width=380,
 
             margin=dict(
                 l=20,
