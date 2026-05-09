@@ -239,34 +239,30 @@ st.markdown(
 
         background-color: white;
 
-        padding: 10px;
+    padding: 35px 35px 35px 35px !important;
 
-        overflow: hidden;
+    margin-bottom: 30px !important;
 
-        margin-bottom: 30px !important;
+    border-radius: 22px;
 
-        border-radius: 20px;
+    display: flex;
 
-        border: 1px solid #E2E8F0;
+    justify-content: center;
 
-        box-shadow:
-            0px 3px 10px rgba(0,0,0,0.04);
+    align-items: center;
+        
+
     }}
 
     .vega-embed {{
 
-        background-color: white;
+background-color: white;
 
-        padding: 24px;
+    padding: 35px 35px 25px 35px !important;
 
-        margin-bottom: 30px !important;
+    border-radius: 22px;
 
-        border-radius: 20px;
-
-        border: 1px solid #E2E8F0;
-
-        box-shadow:
-            0px 3px 10px rgba(0,0,0,0.04);
+    overflow: hidden;
     }}
 
     /* =====================================================
@@ -646,7 +642,9 @@ with tab2:
                 title="Categoría",
                 sort="-y",
                 axis=alt.Axis(
-                    labelAngle=-45
+                    labelAngle=-45,
+                    labelFontSize=14,
+                    titleFontSize=16
                 )
             ),
 
@@ -655,12 +653,15 @@ with tab2:
                 title="Ventas Totales",
                 scale=alt.Scale(
                     domain=[0, max_y]
+                ),
+                axis=alt.Axis(
+                    labelFontSize=13,
+                    titleFontSize=16
                 )
             )
         ).properties(
             title="Ventas Totales por Categoría",
-            width=340,
-            height=380
+            height=360
         )
 
         texto = chart.mark_text(
@@ -794,7 +795,7 @@ with tab2:
             title_font_size=22,
 
             height=380,
-            width=380,
+        
 
             margin=dict(
                 l=20,
