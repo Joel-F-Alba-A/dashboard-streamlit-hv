@@ -659,8 +659,8 @@ with tab2:
             )
         ).properties(
             title="Ventas Totales por Categoría",
-            width=450,
-            height=420
+            width=340,
+            height=380
         )
 
         texto = chart.mark_text(
