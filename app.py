@@ -741,7 +741,7 @@ with tab2:
     with col2:
 
         st.subheader(
-            "👥 Participación de Ventas por Género"
+            "👥 (%) Ventas por Género"
         )
 
         genero = (
