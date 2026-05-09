@@ -598,265 +598,242 @@ with tab1:
         """,
         unsafe_allow_html=True
     )
-
-# =========================================================
-# TAB 2
-# =========================================================
-
 with tab2:
-
-    col1, col2 = st.columns(
-        2,
-        gap="large"
-    )
 
     # =====================================================
     # GRÁFICO CATEGORÍAS
     # =====================================================
 
-    with col1:
+    st.subheader("📦 Ventas por Categoría")
 
-        st.subheader("📦 Ventas por Categoría")
+    categoria = (
+        df_filtrado
+        .groupby("Product Category")
+        ["Total Amount"]
+        .sum()
+        .reset_index()
+    )
 
-        categoria = (
-            df_filtrado
-            .groupby("Product Category")
-            ["Total Amount"]
-            .sum()
-            .reset_index()
-        )
+    max_y = (
+        categoria["Total Amount"]
+        .max() * 1.15
+    )
 
-        max_y = (
-            categoria["Total Amount"]
-            .max() * 1.15
-        )
+    chart = alt.Chart(categoria).mark_bar(
+        color=PRIMARY,
+        cornerRadiusTopLeft=8,
+        cornerRadiusTopRight=8
+    ).encode(
 
-        chart = alt.Chart(categoria).mark_bar(
-            color=PRIMARY,
-            cornerRadiusTopLeft=8,
-            cornerRadiusTopRight=8
-        ).encode(
+        x=alt.X(
+            "Product Category:N",
+            title="Categoría",
+            sort="-y",
+            axis=alt.Axis(
+                labelAngle=-45,
+                labelFontSize=14,
+                titleFontSize=16
+            )
+        ),
 
-            x=alt.X(
-                "Product Category:N",
-                title="Categoría",
-                sort="-y",
-                axis=alt.Axis(
-                    labelAngle=-45,
-                    labelFontSize=14,
-                    titleFontSize=16
-                )
+        y=alt.Y(
+            "Total Amount:Q",
+            title="Ventas Totales",
+            scale=alt.Scale(
+                domain=[0, max_y]
             ),
-
-            y=alt.Y(
-                "Total Amount:Q",
-                title="Ventas Totales",
-                scale=alt.Scale(
-                    domain=[0, max_y]
-                ),
-                axis=alt.Axis(
-                    labelFontSize=13,
-                    titleFontSize=16
-                )
-            )
-        ).properties(
-            title="Ventas Totales por Categoría",
-            height=360
-        )
-
-        texto = chart.mark_text(
-            align='center',
-            baseline='bottom',
-            dy=-5,
-            color=TEXT,
-            fontSize=14,
-            fontWeight="bold"
-        ).encode(
-
-            text=alt.Text(
-                "Total Amount:Q",
-                format=",.0f"
+            axis=alt.Axis(
+                labelFontSize=13,
+                titleFontSize=16
             )
         )
+    ).properties(
+        title="Ventas Totales por Categoría",
+        height=420
+    )
 
-        grafico_final = (
-            chart + texto
-        ).configure(
-            background="white"
-        ).configure_axis(
-            labelColor=TEXT,
-            titleColor=TEXT,
-            gridColor=GRID,
-            labelFontSize=14,
-            titleFontSize=16
-        ).configure_title(
-            color=TEXT,
-            fontSize=22
+    texto = chart.mark_text(
+        align='center',
+        baseline='bottom',
+        dy=-5,
+        color=TEXT,
+        fontSize=14,
+        fontWeight="bold"
+    ).encode(
+
+        text=alt.Text(
+            "Total Amount:Q",
+            format=",.0f"
         )
+    )
 
-        st.altair_chart(
-            grafico_final,
-            use_container_width=True
-        )
+    grafico_final = (
+        chart + texto
+    ).configure(
+        background="white"
+    ).configure_axis(
+        labelColor=TEXT,
+        titleColor=TEXT,
+        gridColor=GRID,
+        labelFontSize=14,
+        titleFontSize=16
+    ).configure_title(
+        color=TEXT,
+        fontSize=22
+    )
 
-        mejor_categoria = categoria.sort_values(
-            by="Total Amount",
-            ascending=False
-        ).iloc[0]["Product Category"]
+    st.altair_chart(
+        grafico_final,
+        use_container_width=True
+    )
 
-        porcentaje_categoria = (
-            categoria["Total Amount"].max()
-            /
-            categoria["Total Amount"].sum()
-        )
+    mejor_categoria = categoria.sort_values(
+        by="Total Amount",
+        ascending=False
+    ).iloc[0]["Product Category"]
 
-        st.markdown(
-            f"""
-            <div style="
-                background-color:#DBEAFE;
-                padding:20px;
-                border-radius:16px;
-                border-left:6px solid {PRIMARY};
-                font-size:20px;
-                color:{TEXT};
-                line-height:1.7;
-                margin-top:10px;
-            ">
-            <b>Interpretación:</b><br>
-            La categoría con mayor volumen de ventas es
-            <b>{mejor_categoria}</b>,
-            representando aproximadamente
-            <b>{porcentaje_categoria:.1%}</b>
-            de las ventas totales.
-            Esto evidencia una mayor preferencia de consumo
-            hacia esta línea de productos.
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+    porcentaje_categoria = (
+        categoria["Total Amount"].max()
+        /
+        categoria["Total Amount"].sum()
+    )
+
+    st.markdown(
+        f"""
+        <div style="
+            background-color:#DBEAFE;
+            padding:20px;
+            border-radius:16px;
+            border-left:6px solid {PRIMARY};
+            font-size:20px;
+            color:{TEXT};
+            line-height:1.7;
+            margin-top:10px;
+            margin-bottom:40px;
+        ">
+        <b>Interpretación:</b><br>
+
+        La categoría con mayor volumen de ventas es
+        <b>{mejor_categoria}</b>,
+        representando aproximadamente
+        <b>{porcentaje_categoria:.1%}</b>
+        de las ventas totales.
+
+        Esto evidencia una mayor preferencia de consumo
+        hacia esta línea de productos.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # =====================================================
     # GRÁFICO GÉNERO
     # =====================================================
 
-    with col2:
+    st.subheader("👥 (%) Ventas por Género")
 
-        st.subheader(
-            "👥 (%) Ventas por Género"
-        )
+    genero = (
+        df_filtrado
+        .groupby("Gender")
+        ["Total Amount"]
+        .sum()
+        .reset_index()
+    )
 
-        genero = (
-            df_filtrado
-            .groupby("Gender")
-            ["Total Amount"]
-            .sum()
-            .reset_index()
-        )
+    fig2 = px.pie(
+        genero,
+        names="Gender",
+        values="Total Amount",
+        hole=0.55,
+        title="Distribución de Ventas por Género"
+    )
 
-        fig2 = px.pie(
-            genero,
-            names="Gender",
-            values="Total Amount",
-            hole=0.55,
-            title="Distribución de Ventas por Género"
-        )
+    fig2.update_traces(
 
-        fig2.update_traces(
+        textinfo="percent+label",
 
-            textinfo="percent+label",
+        textfont_size=16,
 
-            textfont_size=15,
-
-            marker=dict(
-                colors=[
-                    PRIMARY,
-                    SECONDARY
-                ],
-                line=dict(
-                    color="white",
-                    width=2
-                )
-            ),
-
-            pull=[0.02, 0.02]
-        )
-
-        fig2.update_layout(
-            autosize=True,
-            paper_bgcolor="white",
-            plot_bgcolor="white",
-            showlegend=False,
-
-            font=dict(
-                color=TEXT,
-                size=15
-            ),
-
-            title_font_size=22,
-
-            height=380,
-        
-
-            margin=dict(
-                l=20,
-                r=20,
-                t=70,
-                b=20
-            ),
-
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=-0.15,
-                xanchor="center",
-                x=0.5,
-                font=dict(size=14)
+        marker=dict(
+            colors=[
+                PRIMARY,
+                SECONDARY
+            ],
+            line=dict(
+                color="white",
+                width=2
             )
+        ),
+
+        pull=[0.02, 0.02]
+    )
+
+    fig2.update_layout(
+
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+
+        showlegend=False,
+
+        font=dict(
+            color=TEXT,
+            size=16
+        ),
+
+        title_font_size=24,
+
+        height=500,
+
+        margin=dict(
+            l=20,
+            r=20,
+            t=70,
+            b=20
         )
+    )
 
-        st.plotly_chart(
-            fig2,
-            use_container_width=True
-        )
+    st.plotly_chart(
+        fig2,
+        use_container_width=True
+    )
 
-        genero_top = genero.sort_values(
-            by="Total Amount",
-            ascending=False
-        ).iloc[0]["Gender"]
+    genero_top = genero.sort_values(
+        by="Total Amount",
+        ascending=False
+    ).iloc[0]["Gender"]
 
-        porcentaje_top = (
-            genero["Total Amount"].max()
-            /
-            genero["Total Amount"].sum()
-        )
+    porcentaje_top = (
+        genero["Total Amount"].max()
+        /
+        genero["Total Amount"].sum()
+    )
 
-        st.markdown(
-            f"""
-            <div style="
-                background-color:#DBEAFE;
-                padding:20px;
-                border-radius:16px;
-                border-left:6px solid {PRIMARY};
-                font-size:20px;
-                color:{TEXT};
-                line-height:1.7;
-                margin-top:10px;
-            ">
-            <b>Interpretación:</b><br>
+    st.markdown(
+        f"""
+        <div style="
+            background-color:#DBEAFE;
+            padding:20px;
+            border-radius:16px;
+            border-left:6px solid {PRIMARY};
+            font-size:20px;
+            color:{TEXT};
+            line-height:1.7;
+            margin-top:10px;
+        ">
+        <b>Interpretación:</b><br>
 
-            El género con mayor participación en ventas es
-            <b>{genero_top}</b>,
-            representando aproximadamente
-            <b>{porcentaje_top:.1%}</b>
-            del total de ingresos.
+        El género con mayor participación en ventas es
+        <b>{genero_top}</b>,
+        representando aproximadamente
+        <b>{porcentaje_top:.1%}</b>
+        del total de ingresos.
 
-            Esto sugiere un comportamiento de compra
-            más activo dentro de este segmento.
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
+        Esto sugiere un comportamiento de compra
+        más activo dentro de este segmento.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 # =========================================================
 # TAB 3
 # =========================================================
