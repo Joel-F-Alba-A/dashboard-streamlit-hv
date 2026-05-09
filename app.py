@@ -759,8 +759,11 @@ with tab2:
         )
 
         fig2.update_traces(
+
             textinfo="percent+label",
-            textfont_size=16,
+
+            textfont_size=15,
+
             marker=dict(
                 colors=[
                     PRIMARY,
@@ -770,19 +773,40 @@ with tab2:
                     color="white",
                     width=2
                 )
-            )
+            ),
+
+            pull=[0.02, 0.02]
         )
 
         fig2.update_layout(
+
             paper_bgcolor="white",
             plot_bgcolor="white",
 
             font=dict(
                 color=TEXT,
-                size=16
+                size=15
             ),
 
-            title_font_size=24
+            title_font_size=22,
+
+            height=430,
+
+            margin=dict(
+                l=20,
+                r=20,
+                t=70,
+                b=20
+            ),
+
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.15,
+                xanchor="center",
+                x=0.5,
+                font=dict(size=14)
+            )
         )
 
         st.plotly_chart(
@@ -814,11 +838,13 @@ with tab2:
                 margin-top:10px;
             ">
             <b>Interpretación:</b><br>
+
             El género con mayor participación en ventas es
             <b>{genero_top}</b>,
             representando aproximadamente
             <b>{porcentaje_top:.1%}</b>
             del total de ingresos.
+
             Esto sugiere un comportamiento de compra
             más activo dentro de este segmento.
             </div>
