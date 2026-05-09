@@ -784,6 +784,7 @@ with tab2:
             autosize=True,
             paper_bgcolor="white",
             plot_bgcolor="white",
+            showlegend=False,
 
             font=dict(
                 color=TEXT,
