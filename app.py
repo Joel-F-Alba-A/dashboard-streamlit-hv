@@ -325,7 +325,7 @@ st.divider()
 def cargar_datos():
 
     return pd.read_csv(
-        "retail_sales_dataset.csv"
+        "data/retail_sales_dataset.csv"
     )
 
 try:
