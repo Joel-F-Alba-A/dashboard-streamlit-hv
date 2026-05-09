@@ -239,7 +239,9 @@ st.markdown(
 
         background-color: white;
 
-        padding: 24px;
+        padding: 10px;
+
+        overflow: hidden;
 
         margin-bottom: 30px !important;
 
